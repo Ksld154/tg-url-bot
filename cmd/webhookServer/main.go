@@ -14,6 +14,7 @@ import (
 )
 
 var (
+	port       = os.Getenv("PORT")
 	bitlyURL   = os.Getenv("BITLY_API_ENDPOINT")
 	bitlyToken = os.Getenv("BITLY_TOKEN")
 	botToken   = os.Getenv("TG_BOT_TOKEN")
@@ -101,7 +102,8 @@ func main() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
 	updates := bot.ListenForWebhook("/updates")
-	go http.ListenAndServe(":443", nil)
+	portToListen := ":" + port
+	go http.ListenAndServe(portToListen, nil)
 
 	err = getURLs(bot, updates)
 	if err != nil {
