@@ -101,7 +101,7 @@ func main() {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
 	updates := bot.ListenForWebhook("/updates")
-	go http.ListenAndServe(":45678", nil)
+	go http.ListenAndServe(":443", nil)
 
 	err = getURLs(bot, updates)
 	if err != nil {
