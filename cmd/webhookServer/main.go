@@ -10,7 +10,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 var (
@@ -21,7 +21,7 @@ var (
 )
 
 const (
-	urlRegexp = `^https?:\/\/[\S]*`
+	urlRegexp = `https?:\/\/[\S]*`
 )
 
 type shortURLObject struct {
@@ -39,7 +39,8 @@ func getURLs(bot *tgbotapi.BotAPI, newEvents tgbotapi.UpdatesChannel) error {
 		// check regexp
 		if urlPattern.MatchString(update.Message.Text) {
 
-			longURL := update.Message.Text
+			// longURL := update.Message.Text
+			longURL := urlPattern.FindString(update.Message.Text)
 			fmt.Println(longURL)
 
 			shortURL, err := shortenURL(longURL)
@@ -86,7 +87,8 @@ func shortenURL(longURL string) (shortURLObject, error) {
 		return shortURLObject{}, err
 	}
 
-	fmt.Println(shortURL.Link)
+	fmt.Println(shortURL.ID)
+	shortURL.ID = "https://" + shortURL.ID
 
 	return shortURL, nil
 }
